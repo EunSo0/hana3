@@ -1,0 +1,25 @@
+.bg-red {
+  background-color: azure;
+}
+body {
+  background-color: lightblue;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+}
+
+ul {
+  font-family: verdana;
+  font-size: 20px;
+}
+#num {
+  background-color: aqua;
+}
+input {
+  background-color: blue;
+}
+ul p {
+  background-color: bisque;
+}

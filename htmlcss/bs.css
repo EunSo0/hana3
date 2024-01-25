@@ -1,0 +1,33 @@
+/* body::before {
+  content: "BBB";
+}
+body태그 앞부분에 내용을 BBB라고 넣어라 */
+
+@media (max-width: 576px) {
+}
+
+@media (min-width: 576px) {
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 992px) {
+}
+
+@media (min-width: 1200px) {
+}
+
+@media (min-width: 1400px) {
+  body::before {
+    content: "XXL";
+  }
+}
+
+.box {
+  background-color: lightpink;
+  border: 2px solid red;
+  min-height: 2rem;
+  font-size: 2rem;
+  width: 100%;
+}
