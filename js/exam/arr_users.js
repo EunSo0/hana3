@@ -55,3 +55,7 @@ const ret3_2 = [square, Math.sqrt, cube].reduce((acc, f) => f(acc), 2);
 const bp1 = (n) => [square, Math.sqrt, cube].reduce((acc, f) => f(acc), n);
 const ret3_3 = arr2.map((item) => bp1(item));
 console.log(ret3_3);
+
+bpm = (fns, n) => fns.reduce((acc, f) => f(acc), n);
+const ret3_4 = bpm([square, Math.sqrt, cube], 2);
+console.log(ret3_4);
