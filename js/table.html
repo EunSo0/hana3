@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>table</title>
+    <script src="table.js" defer></script>
+    <style>
+      thead {
+        border: 1px solid green;
+      }
+      th {
+        border: 1px solid green;
+        border-collapse: collapse;
+        padding: 10px;
+      }
+      td {
+        text-align: center;
+        border: 1px solid green;
+        border-collapse: collapse;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <table id="user" style="margin-bottom: 20px; border-collapse: collapse">
+        <thead>
+          <tr style="border: 1px solid green">
+            <th>ID</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>주소</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </body>
+</html>

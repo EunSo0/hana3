@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subject</title>
+    <script src="subject.js" defer></script>
+    <style>
+      ul {
+        list-style: none;
+      }
+
+      ul li {
+        cursor: pointer;
+      }
+
+      .active {
+        background-color: green;
+        color: white;
+      }
+
+      .selected {
+        border: 1px solid green;
+        min-width: 80%;
+      }
+
+      .show {
+        display: block;
+      }
+
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div style="display: flex">
+      <div>
+        <ul class="subjects">
+          <li>JavaScript</li>
+          <li>TypeScript</li>
+          <li>React</li>
+          <li>Next.js</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
