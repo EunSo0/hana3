@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      th {
+        padding: 2px 20px;
+        border: 1px solid black;
+        text-align: center;
+      }
+      td {
+        padding: 5px 2px;
+        border: 1px solid black;
+        text-align: end;
+      }
+      td.name {
+        text-align: start;
+      }
+      p {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <table id="userTable"></table>
+      <script>
+        const headers = [
+          "번호",
+          "이름",
+          "근무시간",
+          "시간당급여액",
+          "기본액",
+          "초과수당",
+          "합계",
+          "세액",
+          "실지불액",
+        ];
+        const users = {
+          base_time: 20,
+          list: [
+            { id: 1, username: "홍길동", work_time: 40, per_pay: 10000 },
+            { id: 2, username: "송민헌", work_time: 20, per_pay: 20000 },
+            { id: 3, username: "장길산", work_time: 30, per_pay: 30000 },
+            { id: 4, username: "임꺽정", work_time: 10, per_pay: 40000 },
+            { id: 5, username: "강민구", work_time: 30, per_pay: 10000 },
+          ],
+        };
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+          var totalPay = 0;
+          const reg = /\B(?=(\d{3})+(?!\d))/g;
+
+          const userTable = document.getElementById("userTable");
+          const headerRow = userTable.insertRow();
+          headers.forEach((headerText) => {
+            const th = document.createElement("th");
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+          });
+
+          users.list.forEach((user) => {
+            const row = userTable.insertRow();
+            const cells = [
+              user.id,
+              user.username,
+              user.work_time,
+              user.per_pay,
+            ];
+            const pay = user.work_time * user.per_pay;
+            const overtimePay =
+              user.work_time - users.base_time > 0
+                ? (user.work_time - users.base_time) * (user.per_pay * 0.5)
+                : 0;
+            const total = pay + overtimePay;
+            const tax = total * 0.033;
+            const actualPay = total - tax;
+
+            cells.forEach((val, index) => {
+              const cell = row.insertCell();
+              cell.innerText = val.toString().replace(reg, ",");
+              if (index === 1) {
+                cell.classList.add("name");
+              }
+            });
+
+            row.insertCell().innerText = pay.toString().replace(reg, ",");
+            row.insertCell().innerText = overtimePay
+              .toString()
+              .replace(reg, ",");
+            row.insertCell().innerText = total.toString().replace(reg, ",");
+            row.insertCell().innerText = tax.toString().replace(reg, ",");
+            row.insertCell().innerText = actualPay.toString().replace(reg, ",");
+            totalPay += actualPay;
+          });
+
+          const totalP = document.createElement("p");
+          totalP.innerText =
+            "총지불액: " + totalPay.toString().replace(reg, ",");
+
+          document.body.appendChild(totalP);
+        });
+      </script>
+    </div>
+  </body>
+</html>
