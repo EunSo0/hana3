@@ -16,15 +16,15 @@ type SessionContextProp = {
   removeItem: (itemId: number) => void;
 };
 
-const SampleSession: Session = {
-  loginUser: null,
-  // loginUser: { id: 1, name: 'Hong' },
-  cart: [
-    { id: 100, name: '라면', price: 3000 },
-    { id: 101, name: '컵라면', price: 2000 },
-    { id: 200, name: '파', price: 5000 },
-  ],
-};
+// const SampleSession: Session = {
+//   loginUser: null,
+//   // loginUser: { id: 1, name: 'Hong' },
+//   cart: [
+//     { id: 100, name: '라면', price: 3000 },
+//     { id: 101, name: '컵라면', price: 2000 },
+//     { id: 200, name: '파', price: 5000 },
+//   ],
+// };
 
 const SessionContext = createContext<SessionContextProp>({
   session: { loginUser: null, cart: [] },
@@ -40,7 +40,17 @@ type ProviderProps = {
 };
 
 export const SessionProiver = ({ children, myHandlerRef }: ProviderProps) => {
-  const [session, setSession] = useState<Session>(SampleSession);
+  const [session, setSession] = useState<Session>({
+    loginUser: null,
+    cart: [],
+  });
+
+  const setDefaultSession = async () => {
+    console.log('seDa');
+    const res = await fetch('/data/sample.json');
+    const data = await res.json();
+    setSession(data);
+  };
 
   // TODO: validation checking!!
   const login = (id: number, name: string) => {

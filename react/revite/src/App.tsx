@@ -1,12 +1,18 @@
-import { Ref, createRef, forwardRef, useRef } from 'react';
-// import reactLogo from './assets/react.svg';
-// import viteLogo from '/vite.svg';
+import {
+  Ref,
+  createRef,
+  forwardRef,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import './App.css';
 import Hello from './components/Hello';
 import My, { ItemHandler } from './components/My';
 import { flushSync } from 'react-dom';
 import { useCounter } from './contexts/counter-context';
 import { SessionProiver } from './contexts/session-context';
+// import Effect from './components/Effect';
 
 // {ss: 'FirstComponent' }
 // function H5({ ss }: { ss: string }) {
@@ -20,19 +26,37 @@ const H5 = forwardRef(({ ss }: { ss: string }, ref: Ref<HTMLInputElement>) => {
 });
 H5.displayName = 'H5';
 
+type Position = { x: number; y: number };
+
 function App() {
   const { count, plusCount } = useCounter();
+  const [position, setPosition] = useState<Position>({
+    x: 0,
+    y: 0,
+  });
 
   const childInputRef = createRef<HTMLInputElement>();
   const titleRef = useRef<HTMLHeadingElement>(null);
-
   const myHandlerRef = useRef<ItemHandler>(null);
+
+  const catchPosition = ({ x, y }: Position) => {
+    setPosition({ x, y });
+  };
+
+  useLayoutEffect(() => {
+    window.addEventListener('mousemove', catchPosition);
+
+    return () => window.removeEventListener('mousemove', catchPosition);
+  });
 
   return (
     <>
+      {/* <Effect /> */}
+      <small>{JSON.stringify(position)}</small>
       <h1 ref={titleRef} style={{ color: 'white', backgroundColor: 'red' }}>
         Vite + React
       </h1>
+
       <H5 ss={`First-Component ${count}`} ref={childInputRef} />
       <button
         onClick={() => {
@@ -51,11 +75,6 @@ function App() {
         Message
       </button>
       <button onClick={() => myHandlerRef.current?.removeItem()}>Rm2</button>
-      
-      <SessionProiver myHandlerRef={myHandlerRef}>
-        <My ref={myHandlerRef} />
-        <Hello>Hello-children!!!!!!!!!!!</Hello>
-      </SessionProiver>
 
       <div className='card'>
         <button
@@ -72,6 +91,12 @@ function App() {
           count is {count}
         </button>
       </div>
+
+      <SessionProiver myHandlerRef={myHandlerRef}>
+        <My ref={myHandlerRef} />
+        <Hello>Hello-children!!!!!!!!!!!</Hello>
+      </SessionProiver>
+
       <button
         onClick={() => titleRef.current?.scrollIntoView({ behavior: 'smooth' })}
       >
