@@ -2,7 +2,8 @@ import {
   Ref,
   createRef,
   forwardRef,
-  useLayoutEffect,
+  useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -11,53 +12,58 @@ import Hello from './components/Hello';
 import My, { ItemHandler } from './components/My';
 import { flushSync } from 'react-dom';
 import { useCounter } from './contexts/counter-context';
-import { SessionProiver } from './contexts/session-context';
+import { SessionProvider } from './contexts/session-context';
+import Posts from './components/Posts';
+import MouseCapture from './components/MouseCapture';
 // import Effect from './components/Effect';
 
 // {ss: 'FirstComponent' }
 // function H5({ ss }: { ss: string }) {
 const H5 = forwardRef(({ ss }: { ss: string }, ref: Ref<HTMLInputElement>) => {
+  const [, rerender] = useState(0);
+  const array = useMemo(() => [1, 2, 3], []);
+  useEffect(() => {
+    console.log('effect Array@@@');
+  }, [array]);
+
   return (
     <div style={{ border: '1px solid skyblue', marginBottom: '0.5rem' }}>
       <h5>H55555566-{ss}</h5>
       <input type='text' ref={ref} placeholder='child-input...' />
+      <button
+        onClick={() => rerender((prev) => prev + 1)}
+        className='btn-danger'
+      >
+        rerender
+      </button>
     </div>
   );
 });
 H5.displayName = 'H5';
 
-type Position = { x: number; y: number };
-
 function App() {
   const { count, plusCount } = useCounter();
-  const [position, setPosition] = useState<Position>({
-    x: 0,
-    y: 0,
-  });
 
   const childInputRef = createRef<HTMLInputElement>();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const myHandlerRef = useRef<ItemHandler>(null);
 
-  const catchPosition = ({ x, y }: Position) => {
-    setPosition({ x, y });
-  };
-
-  useLayoutEffect(() => {
-    window.addEventListener('mousemove', catchPosition);
-
-    return () => window.removeEventListener('mousemove', catchPosition);
-  });
-
   return (
     <>
       {/* <Effect /> */}
-      <small>{JSON.stringify(position)}</small>
       <h1 ref={titleRef} style={{ color: 'white', backgroundColor: 'red' }}>
         Vite + React
       </h1>
 
-      <H5 ss={`First-Component ${count}`} ref={childInputRef} />
+      <SessionProvider myHandlerRef={myHandlerRef}>
+        <Posts />
+        <My ref={myHandlerRef} />
+        <Hello>Hello-children!!!!!!!!!!!</Hello>
+      </SessionProvider>
+
+      <MouseCapture />
+
+      {/* <H5 ss={`First-Component ${count}`} ref={childInputRef} /> */}
       <button
         onClick={() => {
           if (childInputRef.current) {
@@ -91,11 +97,6 @@ function App() {
           count is {count}
         </button>
       </div>
-
-      <SessionProiver myHandlerRef={myHandlerRef}>
-        <My ref={myHandlerRef} />
-        <Hello>Hello-children!!!!!!!!!!!</Hello>
-      </SessionProiver>
 
       <button
         onClick={() => titleRef.current?.scrollIntoView({ behavior: 'smooth' })}
