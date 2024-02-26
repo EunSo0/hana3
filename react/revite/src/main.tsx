@@ -4,11 +4,14 @@ import App from './App.tsx';
 import Sample from '../src/components/Sample.tsx';
 import './index.css';
 import { CounterProvider } from './contexts/counter-context.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <CounterProvider>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </CounterProvider>
     <Sample />
   </React.StrictMode>
