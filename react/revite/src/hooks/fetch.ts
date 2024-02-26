@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-
 type FetchParam<T> = {
   url: string | URL | globalThis.Request;
   options?: RequestInit;
   dependencies?: unknown[];
-  defaultData: T;
+  defaultData?: T;
 };
 
 export const useFetch = <T>({
@@ -15,7 +14,7 @@ export const useFetch = <T>({
 }: FetchParam<T>) => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [data, setData] = useState<T>(defaultData);
+  const [data, setData] = useState<T | undefined>(defaultData);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -27,17 +26,19 @@ export const useFetch = <T>({
       try {
         const res = await fetch(url, options);
         const data = (await res.json()) as T;
-        // throw new Error('ttt');
         setData(data);
-        setLoading(false);
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message);
+          // console.log('🚀  err:', err.name, typeof err);
+          if (err.name !== 'AbortError') setError(err.message);
         }
+      } finally {
+        setLoading(false);
       }
     })();
 
     return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 
   return { data, isLoading, error };
