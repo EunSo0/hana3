@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import { useSession } from '../../contexts/session-context';
 
@@ -7,16 +7,16 @@ type Prop = {
   toggleEditing: () => void;
 };
 
-const ItemRead = ({ item, toggleEditing }: Prop) => {
+function ItemRead({ item, toggleEditing }: Prop) {
   return (
     <div className='text-right p-5'>
       <div className='border-b border-gray-300'>
-        <span className='float-start'>상품명: </span>
-        {item.name}
+        <small className='float-start'>상품명:</small>
+        {item?.name}
       </div>
       <div className='border-b border-gray-300'>
-        <span className='float-start'>금액: </span>
-        {item.price.toLocaleString()}원
+        <small className='float-start'>금액:</small>
+        {item?.price.toLocaleString()}원
       </div>
       <div className='pt-5 pr-3'>
         <button onClick={toggleEditing} className='btn-primary'>
@@ -25,29 +25,33 @@ const ItemRead = ({ item, toggleEditing }: Prop) => {
       </div>
     </div>
   );
-};
+}
 
-type Field = 'name' | 'price';
+// type Field = 'name' | 'price';
 
 const ItemUpdate = ({ item, toggleEditing }: Prop) => {
   const { saveItem } = useSession();
   const [isDirty, setDirty] = useState(false);
+
   const itemNameRef = useRef<HTMLInputElement>(null);
   const itemPriceRef = useRef<HTMLInputElement>(null);
 
-  const checkDirty = (e: ChangeEvent<HTMLInputElement>) => {
+  // const checkDirty = (e: ChangeEvent<HTMLInputElement>) => {
+  const checkDirty = () => {
     // const inpName: Field = e.currentTarget.name as Field;
     // const inpRef = e.currentTarget.name === 'name' ? itemNameRef : itemPriceRef;
     // setDirty(inpRef.current?.value !== item[inpName]);
 
+    // cf
     setDirty(
       itemNameRef.current?.value !== item.name ||
-        Number(itemPriceRef.current?.value !== item.price)
+        Number(itemPriceRef.current?.value) !== item.price
     );
   };
 
   const saveCartItem = (e: React.FormEvent) => {
     e.preventDefault();
+    // const id = itemIdRef.current;
     const id = item.id;
     const name = itemNameRef.current?.value;
     const price = Number(itemPriceRef.current?.value);
@@ -89,19 +93,23 @@ const ItemUpdate = ({ item, toggleEditing }: Prop) => {
         className='border-2 border-sky-300 rounded-md mt-2'
         onChange={checkDirty}
       />
-      <div className='p-5'>
-        <button type='reset' className='mx-5'>
-          취소
-        </button>
-        <button type='submit' className='btn-primary'>
-          수정
-        </button>
-      </div>
+      {isDirty && (
+        <div className='p-5'>
+          <button type='reset' className='mx-5'>
+            취소
+          </button>
+          <button type='submit' className='btn-primary'>
+            수정
+          </button>
+        </div>
+      )}
     </form>
   );
 };
 
+// detail(read | update)
 export const Item = () => {
+  // const [item, setItem] = useState<Cart | null>(null);
   const [item, setItem] = useState<Cart>({ id: 0, name: '', price: 0 });
   const { item: itemData } = useOutletContext<{ item: Cart }>();
   const { id } = useParams();
@@ -110,7 +118,7 @@ export const Item = () => {
   } = useSession();
 
   useEffect(() => {
-    if (!item && id && cart.length) {
+    if (!itemData && id && cart.length) {
       setItem(cart.find((cartItem) => cartItem.id === +id)!);
     } else if (itemData) {
       setItem(itemData);
@@ -118,6 +126,7 @@ export const Item = () => {
   }, [cart, id, itemData]);
 
   const [isEditing, toggleEditing] = useReducer((pre) => !pre, false);
+
   return (
     <>
       {isEditing ? (

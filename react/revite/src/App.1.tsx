@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import './App.css';
 import Hello from './components/Hello';
 import My, { ItemHandler } from './components/My';
 import { SessionProvider } from './contexts/session-context';
@@ -22,10 +21,10 @@ import {
   Item2,
   ItemEdit2,
 } from './components/items_v2/v2';
+
 // import DeferTrans from './components/DeferTrans';
 // import Effect from './components/Effect';
-
-function App() {
+export function App() {
   const myHandlerRef = useRef<ItemHandler>(null);
   const loginHandlerRef = useRef<LoginHandler>(null);
 
@@ -51,10 +50,10 @@ function App() {
           <Route path='v2/items' element={<ItemLayout2 />}>
             <Route index element={<Items2 />} />
             <Route path=':id' element={<Item2 />} />
-            <Route path=':id/edit' element={<ItemEdit2 />} />
+            <Route path=':id' element={<ItemEdit2 />} />
           </Route>
           {/* <Route path='/items' element={<Items />} />
-        <Route path='/items/:id' element={<Item />} /> */}
+          <Route path='/items/:id' element={<Item />} /> */}
           <Route path='/hello' element={<Hello />} />
           <Route path='/sample' element={<Sample />} />
           <Route path='/difertrans' element={<DeferTrans />} />
@@ -63,19 +62,18 @@ function App() {
       </SessionProvider>
       {/* <Effect /> */}
       {/* <h1 ref={titleRef} style={{ color: 'white', backgroundColor: 'red' }}>
-        Vite + React
-      </h1> */}
+              Vite + React
+            </h1> */}
 
       {/* <DeferTrans /> */}
 
       {/* <button onClick={() => myHandlerRef.current?.signOut()}>
-        App-Sign-Out
-      </button>
-      <button onClick={() => myHandlerRef.current?.notify('테스트메시지')}>
-        Message
-      </button>
-      <button onClick={() => myHandlerRef.current?.removeItem()}>Rm2</button> */}
+              App-Sign-Out
+            </button>
+            <button onClick={() => myHandlerRef.current?.notify('테스트메시지')}>
+              Message
+            </button>
+            <button onClick={() => myHandlerRef.current?.removeItem()}>Rm2</button> */}
     </>
   );
 }
-export default App;

@@ -1,11 +1,5 @@
-import {
-  ChangeEvent,
-  useDeferredValue,
-  useEffect,
-  useState,
-  useTransition,
-} from 'react';
-import { useTimeout } from '../hooks/timeout';
+import { ChangeEvent, useEffect, useState, useTransition } from 'react';
+// import { useTimeout } from '../hooks/timeout';
 
 type List = {
   id: number;
@@ -44,8 +38,8 @@ export default function DeferTrans() {
     });
   };
 
-  useTimeout(
-    // useDebounce(
+  // useTimeout(
+  useDebounce(
     () => {
       console.log('******>>>', searchStr);
       setDebounceStr(searchStr);

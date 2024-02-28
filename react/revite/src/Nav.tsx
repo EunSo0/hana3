@@ -30,6 +30,9 @@ export const Nav = () => (
         <NavLink to='/v1/items'>ItemsV1</NavLink>
       </li>
       <li>
+        <NavLink to='/v2/items'>ItemsV2</NavLink>
+      </li>
+      <li>
         <NavLink
           to='/posts/5'
           style={({ isActive }) => {

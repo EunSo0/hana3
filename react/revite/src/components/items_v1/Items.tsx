@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useSession } from '../../contexts/session-context';
 
+// index(add) page
 export const Items = () => {
   const { saveItem } = useSession();
   const itemNameRef = useRef<HTMLInputElement>(null);
@@ -24,17 +25,18 @@ export const Items = () => {
     itemNameRef.current.value = '';
     if (itemPriceRef.current) itemPriceRef.current.value = '0';
   };
-
   return (
-    <form onSubmit={saveCartItem}>
-      <input type='text' ref={itemNameRef} placeholder='상품명...' />
-      <input type='number' ref={itemPriceRef} placeholder='금액...' />
-      <button type='reset' className='mx-3'>
-        취소
-      </button>
-      <button type='submit' className='btn-primary'>
-        수정
-      </button>
-    </form>
+    <>
+      <form onSubmit={saveCartItem}>
+        <input type='text' ref={itemNameRef} placeholder='상품명...' />
+        <input type='number' ref={itemPriceRef} placeholder='금액...' />
+        <button type='reset' className='mx-3'>
+          취소
+        </button>
+        <button type='submit' className='btn-primary'>
+          추가
+        </button>
+      </form>
+    </>
   );
 };
