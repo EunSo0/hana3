@@ -10,7 +10,7 @@ export const ItemEdit = () => {
   } = useSession();
 
   const [item, setItem] = useState<Cart | null | undefined>(null);
-  const [query] = useSearchParams();
+  const [query] = uses();
   const itemId = query.get('itemId');
   const navigate = useNavigate();
 
