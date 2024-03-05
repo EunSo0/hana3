@@ -1,3 +1,3 @@
 export default function Default() {
-  return <div>default</div>;
+  return <div>App default</div>;
 }
